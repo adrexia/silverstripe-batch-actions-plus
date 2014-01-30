@@ -1,0 +1,5 @@
+---
+Name: BatchActionsPlus
+After: 'framework/*','cms/*'
+---
+
