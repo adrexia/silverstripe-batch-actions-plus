@@ -1,0 +1,35 @@
+
+.batch-pages{
+	width:100%;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.batch-actions .ss-ui-dialog.ui-dialog-content{
+	padding: 0;
+}
+
+.batch-form-body{
+	padding:20px 1em;
+}
+
+.batch-form-actions{
+	margin:20px 1em;
+}
+
+.MovePagesFormController .cms-dialog-content{
+	height:100%;
+	position:relative;
+}
+
+.MovePagesFormController .cms-dialog-content form{
+	height:100%;
+}
+
+
+.MovePagesFormController .cms-dialog-content .Actions{
+	position:absolute;
+	bottom:1em;
+	left:1em;
+}

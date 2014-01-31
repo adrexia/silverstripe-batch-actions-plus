@@ -7,7 +7,7 @@
 
 class CMSBatchAction_HideFromSearch extends CMSBatchAction {
 	public function getActionTitle() {
-		return _t('CMSBatchActions.HIDESEARCH', 'Hide from Search');
+		return _t('CMSBatchActions.HIDESEARCH', 'Hide from search');
 	}
 
 

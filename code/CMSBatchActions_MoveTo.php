@@ -7,7 +7,7 @@
 
 class CMSBatchAction_MoveTo extends CMSBatchAction {
 	public function getActionTitle() {
-		return _t('CMSBatchActions.MOVETO', 'Move to');
+		return _t('CMSBatchActions.MOVETO', 'Move to...');
 	}
 
 
@@ -18,4 +18,5 @@ class CMSBatchAction_MoveTo extends CMSBatchAction {
 	public function applicablePages($ids) {
 		return $this->applicablePagesHelper($ids, 'canEdit', false, true);
 	}
+
 }
