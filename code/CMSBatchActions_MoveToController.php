@@ -5,11 +5,11 @@
  * 
  * @package batchactionsplus
  */
-class MovePagesFormController extends LeftAndMain {
+class CMSBatchActions_MoveToController extends LeftAndMain {
 
-	static $url_segment = 'movepagesform';
+	static $url_segment = 'batchmoveto';
 
-	static $menu_title = 'Move Pages';
+	static $menu_title = 'Move to';
 
 	static $required_permission_codes = false;
 
@@ -106,7 +106,7 @@ class MovePagesFormController extends LeftAndMain {
 			// validate / write move, and redraw form if move fails
 			try {
 				$page->write();
-				return true;
+				return '<input type="hidden" class="close-dialog" />';
 			} catch (ValidationException $e) {
 				return $this->index($this->getRequest(), $pageIDs);
 			}
