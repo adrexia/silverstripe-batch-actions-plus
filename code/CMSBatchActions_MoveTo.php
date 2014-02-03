@@ -1,6 +1,9 @@
 <?php
 /**
-* Extra Batch Actions
+* Extra Batch Action: Move to. 
+* Enables multiple pages to be selected and moved to a new parent
+* Has a javascript requirement (/javascript/LeftAndMain.BatchActionsPlus.js)
+* Processed by CMSBatchActions_MoveToController.php
 *
 * @package BatchActionsPlus
 */

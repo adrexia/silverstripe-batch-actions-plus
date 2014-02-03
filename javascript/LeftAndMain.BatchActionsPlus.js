@@ -1,7 +1,7 @@
 /*jslint browser: true, nomen: true,  white: true */
 
 /**
- * 
+ * Javascript to process extra batch actions. Currently deals with the moveto action
  */
 (function($) {
 

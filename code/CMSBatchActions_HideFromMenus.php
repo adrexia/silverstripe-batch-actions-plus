@@ -1,6 +1,7 @@
 <?php
 /**
-* Extra Batch Actions
+* Extra Batch Action: Hide from Menus
+* Sets the show in menus property on sitetree to false
 *
 * @package BatchActionsPlus
 */

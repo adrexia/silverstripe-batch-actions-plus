@@ -1,6 +1,7 @@
 <?php
 /**
-* Extra Batch Actions
+* Extra Batch Action: Hide from Search
+* Sets the show in show property on sitetree to false
 *
 * @package BatchActionsPlus
 */
