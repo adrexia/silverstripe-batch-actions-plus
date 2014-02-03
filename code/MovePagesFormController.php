@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Controller to process move pages batch action.
+ * 
+ * @package batchactionsplus
+ */
 class MovePagesFormController extends LeftAndMain {
 
 	static $url_segment = 'movepagesform';
@@ -7,42 +13,53 @@ class MovePagesFormController extends LeftAndMain {
 
 	static $required_permission_codes = false;
 
-	public function index($request) {
-		$form = $this->MovePagesForm();
+	/** 
+	 * Function called by AJAX from LeftAndMain.BatchActionsPlus.js 
+	 * and from $this->doMovePages(). 
+	 *
+	 * @param Request $request, String $pageIDs
+	 * @return Form rendered within CMSDialog
+	 */
+	public function index($request, $pageIDs = null) {
+		$form = $this->MovePagesForm($pageIDs);
 		return $this->customise(array(
 			'Content' => ' ',
 			'Form' => $form
 		))->renderWith('CMSDialog');
 	}
 	
-	public function MovePagesForm(){
 
-
-		$pageIDs = Convert::raw2sql($this->getRequest()->getVar('PageIDs'));
-		
+	/**
+	 * Presents a form to select a new parent for pages selected with batch actions.
+	 *
+	 * @param string $pageIDs | null
+	 * @return Form $form
+	 */
+	public function MovePagesForm($pageIDs = null){
 
 		$action = FormAction::create('doMovePages', 'Move')
 			->setUseButtonTag('true')
-			->addExtraClass('ss-ui-button ss-ui-action-constructive')
+			->addExtraClass('ss-ui-button ss-ui-action-constructive batch-form-actions')
 			->setUseButtonTag(true);
+
 		$actions = FieldList::create($action);
 
-		$action->addExtraClass('batch-form-actions');
-
-
-		$allFields = new CompositeField(
-			new HiddenField("PageIDs","PageIDS", $pageIDs),
-			new TreeDropdownField("ParentID", "Choose Parent Page", "SiteTree")
-		);
-
+		$allFields = new CompositeField();
 		$allFields->addExtraClass('batch-form-body');
+
+		if($pageIDs == null){
+			$pageIDs = Convert::raw2sql($this->getRequest()->getVar('PageIDs'));
+		} else{
+			$allFields->push(new LiteralField("ErrorParent",'<p class="message bad">Invalid parent selected, please choose another</p>'));
+		}
+
+		$allFields->push(new HiddenField("PageIDs","PageIDs", $pageIDs));
+		$allFields->push(new TreeDropdownField("ParentID", "Choose Parent Page", "SiteTree"));
 
 		$headings = new CompositeField(
 			new LiteralField(
 				'Heading',
-				sprintf('<h3 class="">%s</h3>',
-					_t('HtmlEditorField.MOVE', 'Move To...'))
-			)
+				sprintf('<h3 class="">%s</h3>', _t('HtmlEditorField.MOVE', 'Move To...')))
 		);
 
 		$headings->addExtraClass('cms-content-header batch-pages');
@@ -51,25 +68,48 @@ class MovePagesFormController extends LeftAndMain {
 			$headings,
 			$allFields
 		);
-		
 
 		$form = Form::create(
 			$this->owner, 
 			'MovePagesForm', 
 			$fields, 
-			$actions, 
-			$this->addNewRequiredFields
+			$actions
 		);
+
 		return $form;
 	}
 
 
 	/**
 	* Handles the movement of pages within the sitetree
+	* Note: if a page is selected as it's own parent, it should be moved to root
+	*
+	* @param array $data, Form $form
+	* @return boolean | index function
 	**/
 	public function doMovePages($data, $form){
-		$pageIDs = $data->pageIDs;
-		var_dump($form);
+		$pageIDs = Convert::raw2sql($data['PageIDs']);
+		$parentID = Convert::raw2sql($data['ParentID']);
+		$pagesArray = explode(',', $pageIDs);
 
+		// for each $pageID (needs to be an array)
+		foreach($pagesArray as $pageID){
+			$page = SiteTree::get()->byID($pageID);
+
+			$page->ParentID = $parentID;
+
+			// Make page root if own id selected
+			if($parentID == $pageID){
+				$page->ParentID = 0;
+			}
+
+			// validate / write move, and redraw form if move fails
+			try {
+				$page->write();
+				return true;
+			} catch (ValidationException $e) {
+				return $this->index($this->getRequest(), $pageIDs);
+			}
+		}
 	}
 }
