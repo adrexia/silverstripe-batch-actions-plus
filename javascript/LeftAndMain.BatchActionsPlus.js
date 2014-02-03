@@ -31,8 +31,8 @@
 					selectValue = $('#Form_BatchActionsForm_Action').val();
 				
 				if(selectValue !== 'admin/pages/batchactions/moveto' || this.getProcessed() === true){
-					this.setProcessed(false); //reset
 					this._super(e);
+					this.setProcessed(false); //reset
 				} else {
 					// if no nodes are selected, return with an error
 					if(!ids || !ids.length) {
@@ -48,12 +48,6 @@
 				
 					// write (possibly modified) IDs back into to the hidden field
 					this.setIDs(ids);
-
-					// Reset failure states
-					tree.find('li').removeClass('failed');
-
-					button = this.find(':submit:first');
-					button.addClass('loading');
 
 					// Set-up the dialog for the move form (see CMSBatchActions_MoveToController.php)
 					dialog = $('#ss-ui-dialog-' + id);
@@ -80,7 +74,6 @@
 					dialog.find('iframe').on('load', function(e) {
 						var contents = $(this).contents(),
 							i = 0,
-							cmsTree = $('.cms-tree'),
 							close = contents.find('input.close-dialog');
 
 						if(close.length > 0){
@@ -88,7 +81,7 @@
 
 							// Update visual sitetree
 							for (i = 0; i < ids.length; i = i + 1) {
-								cmsTree.updateNodesFromServer([ids[i]]);
+								self.getTree().updateNodesFromServer([ids[i]]);
 							}
 
 							//Hack because self._super() doesn't work
