@@ -48,7 +48,7 @@ class CMSBatchActions_MoveToController extends LeftAndMain {
 		$allFields->addExtraClass('batch-form-body');
 
 		if($pageIDs == null){
-			$pageIDs = Convert::raw2sql($this->getRequest()->getVar('PageIDs'));
+			$pageIDs = $this->getRequest()->getVar('PageIDs');
 		} else{
 			$allFields->push(new LiteralField("ErrorParent",'<p class="message bad">Invalid parent selected, please choose another</p>'));
 		}
@@ -88,9 +88,8 @@ class CMSBatchActions_MoveToController extends LeftAndMain {
 	* @return boolean | index function
 	**/
 	public function doMovePages($data, $form){
-		$pageIDs = Convert::raw2sql($data['PageIDs']);
-		$parentID = Convert::raw2sql($data['ParentID']);
-		$pagesArray = explode(',', $pageIDs);
+		$parentID = (int)$data['ParentID'];
+		$pagesArray = explode(',', $data['PageIDs']);
 
 		// for each $pageID (needs to be an array)
 		foreach($pagesArray as $pageID){
@@ -108,7 +107,7 @@ class CMSBatchActions_MoveToController extends LeftAndMain {
 				$page->write();
 				return '<input type="hidden" class="close-dialog" />';
 			} catch (ValidationException $e) {
-				return $this->index($this->getRequest(), $pageIDs);
+				return $this->index($this->getRequest(), $data['PageIDs']);
 			}
 		}
 	}
