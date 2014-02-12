@@ -15,6 +15,17 @@ class CMSBatchAction_MoveTo extends CMSBatchAction {
 
 
 	public function run(SS_List $pages) {
+		$status = array(
+			'modified'=>array()
+		);
+
+		foreach($pages as $page) {
+			$id = $page->ID;
+
+			$status['modified'][$id] = array(
+				'TreeTitle' => $page->TreeTitle
+			);
+		}
 		return $this->response(_t('CMSBatchActions.Moved', 'Moved'), $status);
 	}
 

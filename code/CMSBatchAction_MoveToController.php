@@ -5,7 +5,7 @@
  * 
  * @package batchactionsplus
  */
-class CMSBatchActions_MoveToController extends LeftAndMain {
+class CMSBatchAction_MoveToController extends LeftAndMain {
 
 	static $url_segment = 'batchmoveto';
 
@@ -70,7 +70,7 @@ class CMSBatchActions_MoveToController extends LeftAndMain {
 		);
 
 		$form = Form::create(
-			$this->owner, 
+			$this, 
 			'MovePagesForm', 
 			$fields, 
 			$actions
