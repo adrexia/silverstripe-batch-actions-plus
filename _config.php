@@ -3,7 +3,7 @@
 
 // Default batch action: move to 
 CMSBatchActionHandler::register('moveto', 'CMSBatchAction_MoveTo');
-CMSMenu::remove_menu_item('CMSBatchAction_MoveToController');
+CMSMenu::remove_menu_item('CMSBatchAction_MoveToController'); 
 
 
 // Extras, to be moved to project config as required
