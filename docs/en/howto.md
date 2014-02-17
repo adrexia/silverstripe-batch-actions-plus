@@ -1,4 +1,5 @@
-#How to make your own batch actions
+#How to create your own batch actions
+
 ##Simple (select and click Go) batch actions:
 You can add single stage batch actions by adding a class that extends CMSBatchAction. 
 
