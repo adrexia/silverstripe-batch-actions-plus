@@ -105,10 +105,11 @@ class CMSBatchAction_MoveToController extends LeftAndMain {
 			// validate / write move, and redraw form if move fails
 			try {
 				$page->write();
-				return '<input type="hidden" class="close-dialog" />';
 			} catch (ValidationException $e) {
 				return $this->index($this->getRequest(), $data['PageIDs']);
 			}
 		}
+		
+		return '<input type="hidden" class="close-dialog" />';
 	}
 }
