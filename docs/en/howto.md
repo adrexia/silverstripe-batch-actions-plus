@@ -55,13 +55,14 @@ And you’re done.
 ##Advanced batch actions
 Adding actions which require more information from the user (e.g. a date) requires adding to the user interface. As an example, take a look at the “Move To…” batch action.
 
-```
-The files needed for Move To:
-1) code/CMSBatchAction_MoveTo.php - adds the Move To option to the batch action list (see above).
-2) javascript/LeftAndMain.BatchActionsPlus.js - intercepts the Go button click if the selection action is Move To, and instead presents to user with a custom form.
-3) code/CMSBatchAction_MoveToController.php - builds the custom form, prompting the user to select where they want the page(s) moved to, and handles the form submission. 
-4) _config.php - required to register CMSBatchAction_MoveTo and the javascript include.
-```
+
+The files needed for Move To: 
+
+1. code/CMSBatchAction_MoveTo.php - adds the Move To option to the batch action list (see above).
+2. javascript/LeftAndMain.BatchActionsPlus.js - intercepts the Go button click if the selection action is Move To, and instead presents to user with a custom form.
+3. code/CMSBatchAction_MoveToController.php - builds the custom form, prompting the user to select where they want the page(s) moved to, and handles the form submission. 
+4. _config.php - required to register CMSBatchAction_MoveTo and the javascript include.
+
 
 Take a look at the files above to see how the Move To batch action was implemented.
 
