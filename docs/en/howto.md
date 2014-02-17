@@ -1,20 +1,67 @@
 #How to make your own batch actions
-##Single stage actions
-You can add single stage batch actions by adding a class that extends CMSBatchAction (eg class CMSBatchAction_HideFromMenus extends CMSBatchAction {}). This class needs :
-	
+##Simple (select and click Go) batch actions:
+You can add single stage batch actions by adding a class that extends CMSBatchAction. 
+
+For example, code/CMSBatchAction_HideFromMenus.php:
+ 
+```
+CMSBatchAction_HideFromMenus extends CMSBatchAction {
+
 	// Returns the name of the action for the menu
-	public function getActionTitle()
+	public function getActionTitle(){
+		return _t('CMSBatchActions.HIDESEARCH', 'Hide from search');
+	}
 
-	//
-	public function run(SS_List $pages)
+	// Gets called when the user selects a set of pages and hits Go
+	public function run(SS_List $pages) {
 
-	// Returns a list of pages to be ....
-	public function applicablePages($ids) 
+		$status = array(
+			'modified'=>array()
+		);
 
+		foreach($pages as $page) {
+			$id = $page->ID;
 
+			// Perform the action
+			$page->ShowInSearch = 0;
+			$page->write();
 
-##Multi stage action
-Adding multi stage actions requires an interface for the user to select the action and then choose another option. For this we use modale dialogs. Files needed:
-	* The CMSBatchAction file
-	* A javascript file to produle the modale and link the batch action to a new form
-	* A file to display and process the form.
+			$status['modified'][$id] = array(
+				'TreeTitle' => $page->TreeTitle
+			);
+		}
+
+		return $this->response(_t('CMSBatchActions.HIDDENSEARCH', 'Hidden from search'), $status);
+	}
+
+	// Not sure why this is necessary, looks like a safety check
+	public function applicablePages($ids) {
+		return $this->applicablePagesHelper($ids, 'canEdit', false, true);
+	}
+
+}
+```
+
+In this batch action, we iterate over each selected page and set the ShowInSearch attribute, save it, and return a success response. 
+
+You will also need to register this class with the CMS, do this by adding a line in _config.php, for example:
+
+```
+CMSBatchActionHandler::register('hidefrommenus', 'CMSBatchAction_HideFromMenus');
+```
+
+And you’re done.
+
+##Advanced batch actions
+Adding actions which require more information from the user (e.g. a date) requires adding to the user interface. As an example, take a look at the “Move To…” batch action.
+
+```
+The files needed for Move To:
+1) code/CMSBatchAction_MoveTo.php - adds the Move To option to the batch action list (see above).
+2) javascript/LeftAndMain.BatchActionsPlus.js - intercepts the Go button click if the selection action is Move To, and instead presents to user with a custom form.
+3) code/CMSBatchAction_MoveToController.php - builds the custom form, prompting the user to select where they want the page(s) moved to, and handles the form submission. 
+4) _config.php - required to register CMSBatchAction_MoveTo and the javascript include.
+```
+
+Take a look at the files above to see how the Move To batch action was implemented.
+
