@@ -93,7 +93,11 @@ class CMSBatchAction_MoveToController extends LeftAndMain {
 	* @return boolean | index function
 	**/
 	public function doMovePages($data, $form){
-		$parentID = (int)$data['ParentID'];
+		if($data['ParentID']){
+			$parentID = (int)$data['ParentID'];
+		}else{
+			$parentID = 0;
+		}
 		$pagesArray = explode(',', $data['PageIDs']);
 
 		// for each $pageID (needs to be an array)
