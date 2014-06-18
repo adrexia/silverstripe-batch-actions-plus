@@ -13,6 +13,11 @@ class CMSBatchAction_MoveToController extends LeftAndMain {
 
 	static $required_permission_codes = false;
 
+	private static $allowed_actions = array (
+		'MovePagesForm',
+		'index'
+	);
+
 	/** 
 	 * Function called by AJAX from LeftAndMain.BatchActionsPlus.js 
 	 * and from $this->doMovePages(). 
