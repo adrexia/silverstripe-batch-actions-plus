@@ -7,11 +7,11 @@
  */
 class CMSBatchAction_MoveToController extends LeftAndMain {
 
-	static $url_segment = 'batchmoveto';
+	private static $url_segment = 'batchmoveto';
 
-	static $menu_title = 'Move to';
+	private static $menu_title = 'Move to';
 
-	static $required_permission_codes = false;
+	private static $required_permission_codes = false;
 
 	private static $allowed_actions = array (
 		'MovePagesForm',
