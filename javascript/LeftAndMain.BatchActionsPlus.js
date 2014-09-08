@@ -30,7 +30,7 @@
 					id = 'ss-ui-dialog-' + new Date().getTime(),
 					selectValue = $('#Form_BatchActionsForm_Action').val();
 				
-				if(selectValue !== 'admin/pages/batchactions/moveto' || this.getProcessed() === true){
+				if(selectValue.indexOf('moveto') === -1  || this.getProcessed() === true){
 					this._super(e);
 					this.setProcessed(false); //reset
 				} else {
