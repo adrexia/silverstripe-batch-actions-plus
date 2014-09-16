@@ -41,7 +41,8 @@ class CMSBatchAction_MoveToController extends LeftAndMain {
 	 * @return Form $form
 	 */
 	public function MovePagesForm($pageIDs = null){
-
+		Versioned::reading_stage('Stage'); // Needs this for changes to effect draft tree
+		
 		$action = FormAction::create('doMovePages', 'Move')
 			->setUseButtonTag('true')
 			->addExtraClass('ss-ui-button ss-ui-action-constructive batch-form-actions')
